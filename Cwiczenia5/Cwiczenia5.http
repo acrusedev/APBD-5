@@ -1,0 +1,39 @@
+@Cwiczenia5_HostAddress = http://localhost:5000
+
+GET {{Cwiczenia5_HostAddress}}/api/pcs
+Accept: application/json
+
+###
+
+GET {{Cwiczenia5_HostAddress}}/api/pcs/1/components
+Accept: application/json
+
+###
+
+POST {{Cwiczenia5_HostAddress}}/api/pcs
+Content-Type: application/json
+
+{
+  "name": "Gaming Beast X",
+  "weight": 12.5,
+  "warranty": 36,
+  "createdAt": "2026-05-08T09:00:00",
+  "stock": 5
+}
+
+###
+
+PUT {{Cwiczenia5_HostAddress}}/api/pcs/1
+Content-Type: application/json
+
+{
+  "name": "Gaming Beast X",
+  "weight": 12.5,
+  "warranty": 36,
+  "createdAt": "2026-05-08T09:00:00",
+  "stock": 5
+}
+
+###
+
+DELETE {{Cwiczenia5_HostAddress}}/api/pcs/1
