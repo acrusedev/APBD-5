@@ -11,50 +11,86 @@ public class PcsController(IPcService pcService) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IReadOnlyCollection<PcListItemDto>>> GetAll()
     {
-        var pcs = await pcService.GetAllAsync();
-        return Ok(pcs);
+        try
+        {
+            var pcs = await pcService.GetAllAsync();
+            return Ok(pcs);
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
     [HttpGet("{id:int}/components")]
     public async Task<ActionResult<PcDetailsDto>> GetByIdWithComponents(int id)
     {
-        var pc = await pcService.GetByIdWithComponentsAsync(id);
-        if (pc is null)
+        try
         {
-            return NotFound();
-        }
+            var pc = await pcService.GetByIdWithComponentsAsync(id);
+            if (pc is null)
+            {
+                return NotFound();
+            }
 
-        return Ok(pc);
+            return Ok(pc);
+        } catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+      
     }
 
     [HttpPost]
     public async Task<ActionResult<PcListItemDto>> Create([FromBody] CreateOrUpdatePcRequestDto request)
     {
-        var createdPc = await pcService.CreateAsync(request);
-        return CreatedAtAction(nameof(GetByIdWithComponents), new { id = createdPc.Id }, createdPc);
+        try
+        {
+            var createdPc = await pcService.CreateAsync(request);
+            return CreatedAtAction(nameof(GetByIdWithComponents), new { id = createdPc.Id }, createdPc);
+        } catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+
     }
 
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] CreateOrUpdatePcRequestDto request)
     {
-        var updated = await pcService.UpdateAsync(id, request);
-        if (!updated)
+        try
         {
-            return NotFound();
+            var updated = await pcService.UpdateAsync(id, request);
+            if (!updated)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        } catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
         }
 
-        return Ok();
     }
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await pcService.DeleteAsync(id);
-        if (!deleted)
+        try
         {
-            return NotFound();
-        }
+            var deleted = await pcService.DeleteAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
 
-        return NoContent();
+            return NoContent();
+        } catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+       
     }
 }
